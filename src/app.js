@@ -2,11 +2,13 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const leaderboardsRouter = require("./leaderboards/leaderboards.router");
+const usersRouter = require("./users/users.router");
 
 app.use(cors());
 app.use(express.json());
 
 app.use("/leaderboards", leaderboardsRouter);
+app.use("/users", usersRouter);
 
 //Not found handler
 app.use((req, res, next) => {

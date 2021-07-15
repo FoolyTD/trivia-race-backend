@@ -1,15 +1,15 @@
 
 exports.up = function(knex) {
   return knex.schema.createTable("leaderboards", (table) => {
-    table.integer("player_id").unsigned().notNullable();
+    table.integer("user_id").unsigned().notNullable();
     table
-    .foreign("player_id")
+    .foreign("user_id")
     .references("user_id")
     .inTable("users")
     .onDelete("cascade");
-    table.string("player_name").unsigned().notNullable();
+    table.string("user_name").unsigned().notNullable();
     table
-    .foreign("player_name")
+    .foreign("user_name")
     .references("user_name")
     .inTable("users")
     .onDelete("cascade");
