@@ -1,3 +1,4 @@
+const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const service = require("./users.service");
 
 async function userExists(req, res, next) {
@@ -26,7 +27,6 @@ function isValidUser(req, res, next) {
         });
     }
     for (let key in data) {
-        console.log(key);
         if (!VALID_FIELDS.includes(key)) {
             return next({
                 status: 404,
@@ -56,7 +56,7 @@ async function create(req,res,next) {
 }
 
 module.exports = {
-    list,
-    create: [isValidUser,create],
-    read: [userExists, read],
+    list: asyncErrorBoundary(list),
+    create: [asyncErrorBoundary(isValidUser), asyncErrorBoundary(create)],
+    read: [asyncErrorBoundary(userExists), asyncErrorBoundary(read)],
 };

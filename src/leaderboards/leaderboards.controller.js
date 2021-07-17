@@ -1,5 +1,6 @@
 const service = require("./leaderboards.service");
 const usersService = require("../users/users.service");
+const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 function isValidEntry(req,res,next) {
     const { data } = req.body;
@@ -58,6 +59,6 @@ async function create(req,res,next) {
 }
 
 module.exports = {
-    list,
-    create: [isValidEntry, playerExists, create],
+    list: asyncErrorBoundary(list),
+    create: [asyncErrorBoundary(isValidEntry), asyncErrorBoundary(playerExists), asyncErrorBoundary(create)],
 };
