@@ -11,18 +11,13 @@ function isValidEntry(req,res,next) {
             message: `missing data in request`
         });
     }
-    if (data.user_id === undefined || data.score === undefined/* || data.player_name.match(/[0-9]/) */) {
+    if (data.user_id === undefined || data.score === undefined || data.category === undefined) {
         return next({
             status:400,
-            message: `missing data field(s). 'user_id & 'score' are required`
+            message: `missing data field(s). 'user_id', 'score' & 'category' are required`
         });
     } 
-    // if (data.score === undefined /* || data.score.match(/[^0-9]/) */) {
-    //     return next({
-    //         status:400,
-    //         message: `missing score, or invalid score`
-    //     });
-    // }
+
     for (let key in data) {
         if (!VALID_FIELDS.includes(key)) {
             return next({
@@ -57,7 +52,6 @@ async function list(req,res,next) {
 
 async function create(req,res,next) {
     const { entry } = res.locals;
-    console.log(entry);
     const data = await service.create(entry);
 
     res.json({data});
