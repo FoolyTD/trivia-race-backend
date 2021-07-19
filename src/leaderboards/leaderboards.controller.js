@@ -4,7 +4,7 @@ const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 function isValidEntry(req,res,next) {
     const { data } = req.body;
-    const VALID_FIELDS = ['user_id', 'score'];
+    const VALID_FIELDS = ['user_id', 'score', 'category'];
 
     if (data === undefined) {
         return next({
