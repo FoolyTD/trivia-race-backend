@@ -16,7 +16,7 @@ function readName(user_name) {
 }
 
 function create(user) {
-  return knex("users").insert(user).returning("*");
+  return knex("users").insert(user).returning("user_name", "user_id");
 }
 
 function update(updatedUser) {
