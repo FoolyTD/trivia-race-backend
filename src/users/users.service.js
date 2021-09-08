@@ -6,7 +6,15 @@ function list() {
 
 function read(user_id) {
     return knex("users")
+    .select("user_name","user_id")
     .where({user_id})
+    .first()
+}
+
+function readName(user_name) {
+    return knex("users")
+    .where({user_name})
+    .first()
 }
 
 function create(user) {
@@ -18,5 +26,6 @@ function create(user) {
 module.exports = {
     list,
     create,
-    read
+    read,
+    readName
 }
