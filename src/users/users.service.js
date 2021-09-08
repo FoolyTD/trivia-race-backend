@@ -16,7 +16,7 @@ function readName(user_name) {
 }
 
 function create(user) {
-  return knex("users").insert(user).select("user_name", "user_id");
+  return knex("users").insert(user).returning(["user_name", "user_id"]);
 }
 
 function update(updatedUser) {
@@ -27,9 +27,7 @@ function update(updatedUser) {
 }
 
 function destroy(user_id) {
-  return knex("users")
-  .where({user_id})
-  .del();
+  return knex("users").where({ user_id }).del();
 }
 
 module.exports = {
@@ -38,5 +36,5 @@ module.exports = {
   read,
   readName,
   update,
-  destroy
+  destroy,
 };
