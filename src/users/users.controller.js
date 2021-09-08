@@ -18,6 +18,7 @@ async function userExists(req, res, next) {
   res.locals.user = data;
   next();
 }
+
 function isValidUser(req, res, next) {
   const VALID_FIELDS = ["user_name", "password", "email"];
   const { data } = req.body;
@@ -81,9 +82,27 @@ async function create(___, res, ___) {
   res.json({ data });
 }
 
+async function update(req,res,next) {
+  const { user } = res.locals;
+  const foundUser = await service.readName(user.user_name);
+  const updatedUser = {
+    ...foundUser,
+    ...user
+  }
+  const data = await service.update(updatedUser);
+  res.json({ data });
+}
+
+async function destroy(req,res,next) {
+  const data = await service.destroy(res.locals.user.user_id);
+  res.sendStatus(204);
+}
+
 module.exports = {
-  create: [asyncErrorBoundary(isValidUser), asyncErrorBoundary(create)],
+  create: [isValidUser, asyncErrorBoundary(create)],
   read: [asyncErrorBoundary(userExists), asyncErrorBoundary(read)],
   login: [asyncErrorBoundary(login)],
-  list: [asyncErrorBoundary(list)]
+  list: [asyncErrorBoundary(list)],
+  update: [isValidUser, asyncErrorBoundary(update)],
+  delete: [asyncErrorBoundary(userExists),asyncErrorBoundary(destroy)]
 };
