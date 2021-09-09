@@ -47,6 +47,8 @@ async function login(req, res, next) {
   const { data = {} } = req.body;
   const { user_name, password } = data;
   const foundUser = await service.readName(user_name);
+  console.log(password);
+  console.log(foundUser.password);
 
   if (foundUser === undefined) {
     return next({
@@ -54,7 +56,7 @@ async function login(req, res, next) {
       message: "user not found",
     });
   }
-  if (+password === +foundUser.password) {
+  if (password == foundUser.password) {
     const response = { user_id: foundUser.user_id, user_name };
     res.status(200).json({ data: response });
   } else {
